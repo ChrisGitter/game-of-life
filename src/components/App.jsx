@@ -14,6 +14,7 @@ import FooterContainer from './FooterContainer';
 const App = ({
   active,
   setRef,
+  cycles,
   handleClickStart,
   handleClickPause,
   handleClickClear,
@@ -23,6 +24,9 @@ const App = ({
     <Header>
       <h1>
         {"Conway's Game of Life"}
+        <span>
+          {cycles} cycles
+        </span>
       </h1>
       <Menu>
         <StartButton
@@ -60,6 +64,7 @@ App.propTypes = {
   handleClickCanvas: PropTypes.func.isRequired,
   active: PropTypes.bool.isRequired,
   setRef: PropTypes.func.isRequired,
+  cycles: PropTypes.number.isRequired,
 };
 
 export default App;

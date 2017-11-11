@@ -7,6 +7,7 @@ import App from './App';
 
 const mapStateToProps = state => ({
   active: state.active,
+  cycles: state.cycles,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
@@ -14,6 +15,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   pause: actions.pause,
   clear: actions.clear,
   init: actions.init,
+  addCell: actions.addCell,
 }, dispatch);
 
 class AppContainer extends React.Component {
@@ -48,8 +50,12 @@ class AppContainer extends React.Component {
     this.props.clear();
   }
 
-  handleClickCanvas() {
-    this.props.pause();
+  handleClickCanvas(e) {
+    const { offsetTop, offsetLeft } = e.target;
+    const { pageX, pageY } = e;
+    const clickX = pageX - offsetLeft;
+    const clickY = pageY - offsetTop;
+    this.props.addCell([clickX, clickY]);
   }
 
   render() {
@@ -57,6 +63,7 @@ class AppContainer extends React.Component {
       <App
         active={this.props.active}
         setRef={this.setRef}
+        cycles={this.props.cycles}
         handleClickStart={this.handleClickStart}
         handleClickPause={this.handleClickPause}
         handleClickClear={this.handleClickClear}
@@ -71,6 +78,8 @@ AppContainer.propTypes = {
   pause: PropTypes.func.isRequired,
   clear: PropTypes.func.isRequired,
   init: PropTypes.func.isRequired,
+  addCell: PropTypes.func.isRequired,
+  cycles: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer);

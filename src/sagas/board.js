@@ -1,6 +1,6 @@
 import { delay } from 'redux-saga';
-import { select, call, take, race, fork, takeEvery } from 'redux-saga/effects';
-import { INIT, PAUSE, CLEAR, START, SETTINGS } from '../store/actions';
+import { select, call, take, race, fork, takeEvery, put } from 'redux-saga/effects';
+import { INIT, PAUSE, CLEAR, START, SETTINGS, CELL, cycle, resetCycle } from '../store/actions';
 
 let canvasNode = null;
 let board = null;
@@ -112,8 +112,9 @@ function* timer() {
       take([PAUSE, CLEAR]),
     ]);
     if (result[1]) {
-      yield take(START);
+      yield take([START, SETTINGS]);
     }
+    yield put(cycle());
     const hasUpdate = yield call(updateBoard);
     if (hasUpdate) {
       yield call(renderBoard);
@@ -127,6 +128,7 @@ function* createCells() {
     cols: state.cols,
     cellSize: state.cellSize,
   }));
+  yield put(resetCycle());
   board = Array.from(
     { length: rows },
     () => Array.from(
@@ -147,7 +149,18 @@ function* createCells() {
 }
 
 function* clearCells() {
+  yield put(resetCycle());
   const newBoard = board.map(row => row.map(() => 0));
+  board = newBoard;
+  yield call(renderBoard);
+}
+
+function* addCell({ payload: [x, y] }) {
+  const { width, height } = canvasNode;
+  const col = Math.floor(((1 / width) * x) * board[0].length);
+  const row = Math.floor(((1 / height) * y) * board.length);
+  const newBoard = board.slice();
+  newBoard[row][col] = 2;
   board = newBoard;
   yield call(renderBoard);
 }
@@ -159,6 +172,7 @@ function* main() {
   yield fork(timer);
   yield takeEvery(SETTINGS, createCells);
   yield takeEvery(CLEAR, clearCells);
+  yield takeEvery(CELL, addCell);
 }
 
 export default main;

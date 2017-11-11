@@ -11,6 +11,7 @@ const INITIAL_STATE = {
   rows: 30,
   cellSize: 10,
   speed: 100,
+  cycles: 0,
 };
 
 const actionSanitizer = action => (
@@ -19,9 +20,14 @@ const actionSanitizer = action => (
     : action
 );
 
+const options = {
+  actionSanitizer,
+  actionsBlacklist: ['CYCLE'],
+};
+
 const composeEnhancers =
 typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ actionSanitizer })
+  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__(options)
   : compose;
 
 const store = createStore(

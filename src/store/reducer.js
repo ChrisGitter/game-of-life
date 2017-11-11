@@ -21,10 +21,19 @@ const createReducer = defaultState => handleActions(
       cols,
       rows,
       cellSize,
+      active: true,
     }),
     [actions.SPEED]: (state, { payload }) => ({
       ...state,
       speed: payload,
+    }),
+    [actions.CYCLE]: state => ({
+      ...state,
+      cycles: state.cycles + 1,
+    }),
+    [actions.RESET_CYCLE]: state => ({
+      ...state,
+      cycles: 0,
     }),
   },
   defaultState,

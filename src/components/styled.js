@@ -17,6 +17,13 @@ export const Header = styled.div`
   h1 {
     color : #e0f8f4;
     font-size: 30px;
+    span {
+      font-size: 18px;
+      color: rgba(224, 248, 244, 0.5);
+      margin-left: 10px;
+      min-width: 100px;
+      display: inline-block;
+    }
   }
 `;
 

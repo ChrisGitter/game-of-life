@@ -50,6 +50,23 @@ export const FooterWrapper = styled.div`
   }
 `;
 
+export const Credits = styled.div`
+  display: flex;
+  flex-direction: column !important;
+  justify-contnt: center;
+  align-items: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #89898a;
+  a, a:link, a:visited {
+    color: #89898a;
+    text-decoration: none;
+    &: hover {
+      text-decoration: underline;
+    }
+  }
+`;
+
 export const SpeedSelector = styled.div`
   color: #e0f8f4;
   margin: 10px;

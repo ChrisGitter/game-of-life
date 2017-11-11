@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FooterWrapper, FooterField, UpdateButton, SpeedSelector } from './styled';
+import Heart from 'react-icons/lib/go/heart';
+import Github from 'react-icons/lib/go/mark-github';
+import { FooterWrapper, FooterField, UpdateButton, SpeedSelector, Credits } from './styled';
 
 const Footer = ({
   colValue,
@@ -38,6 +40,10 @@ const Footer = ({
         <option value="1000">Boring</option>
       </select>
     </SpeedSelector>
+    <Credits>
+      <p>Made with <Heart /></p>
+      <p><a href="https://github.com/ChrisGitter/game-of-life">View on Github <Github /></a></p>
+    </Credits>
   </FooterWrapper>
 );
 Footer.propTypes = {

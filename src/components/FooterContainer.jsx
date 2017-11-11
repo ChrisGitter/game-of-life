@@ -1,15 +1,27 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { settings, setSpeed } from '../store/actions';
 import Footer from './Footer';
 
 const mapStateToProps = state => ({
   cols: state.cols,
   rows: state.rows,
   cellSize: state.cellSize,
+  speed: state.speed,
 });
 
+const mapDispatchToProps = dispatch => bindActionCreators(
+  {
+    settings,
+    setSpeed,
+  },
+  dispatch,
+);
+
 const inputRegex = /^\d{1,3}$/;
+const speedRegex = /^\d{1,5}$/;
 
 class FooterContainer extends React.Component {
   constructor(props) {
@@ -19,11 +31,14 @@ class FooterContainer extends React.Component {
       colValue: String(props.cols),
       rowValue: String(props.rows),
       cellSizeValue: String(props.cellSize),
+      speedValue: String(props.speed),
     };
 
     this.updateColValue = this.updateColValue.bind(this);
     this.updateRowValue = this.updateRowValue.bind(this);
     this.updateCellSizeValue = this.updateCellSizeValue.bind(this);
+    this.handleClickButton = this.handleClickButton.bind(this);
+    this.updateSpeedValue = this.updateSpeedValue.bind(this);
   }
 
   updateColValue(e) {
@@ -56,12 +71,35 @@ class FooterContainer extends React.Component {
     }
   }
 
+  updateSpeedValue(e) {
+    const speedValue = e.target.value;
+    if (speedRegex.test(speedValue)) {
+      this.setState(state => ({
+        ...state,
+        speedValue,
+      }), () => {
+        this.props.setSpeed(+speedValue);
+      });
+    }
+  }
+
+  handleClickButton() {
+    const { colValue, rowValue, cellSizeValue } = this.state;
+    this.props.settings({
+      cols: +colValue,
+      rows: +rowValue,
+      cellSize: +cellSizeValue,
+    });
+  }
+
   render() {
     return (
       <Footer
         updateColValue={this.updateColValue}
         updateRowValue={this.updateRowValue}
         updateCellSizeValue={this.updateCellSizeValue}
+        handleClickButton={this.handleClickButton}
+        updateSpeedValue={this.updateSpeedValue}
         {...this.state}
       />
     );
@@ -71,6 +109,9 @@ FooterContainer.propTypes = {
   cols: PropTypes.number.isRequired,
   rows: PropTypes.number.isRequired,
   cellSize: PropTypes.number.isRequired,
+  speed: PropTypes.number.isRequired,
+  settings: PropTypes.func.isRequired,
+  setSpeed: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(FooterContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(FooterContainer);

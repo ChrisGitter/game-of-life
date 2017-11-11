@@ -14,8 +14,6 @@ import FooterContainer from './FooterContainer';
 const App = ({
   active,
   setRef,
-  sizeX,
-  sizeY,
   handleClickStart,
   handleClickPause,
   handleClickClear,
@@ -49,8 +47,6 @@ const App = ({
     <Board>
       <canvas
         ref={setRef}
-        height={sizeY}
-        width={sizeX}
         onClick={handleClickCanvas}
       />
     </Board>
@@ -64,8 +60,6 @@ App.propTypes = {
   handleClickCanvas: PropTypes.func.isRequired,
   active: PropTypes.bool.isRequired,
   setRef: PropTypes.func.isRequired,
-  sizeX: PropTypes.number.isRequired,
-  sizeY: PropTypes.number.isRequired,
 };
 
 export default App;

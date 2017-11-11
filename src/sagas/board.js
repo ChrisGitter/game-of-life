@@ -1,6 +1,6 @@
 import { delay } from 'redux-saga';
-import { select, call, take, race } from 'redux-saga/effects';
-import { INIT, PAUSE, CLEAR, START } from '../store/actions';
+import { select, call, take, race, fork, takeEvery } from 'redux-saga/effects';
+import { INIT, PAUSE, CLEAR, START, SETTINGS } from '../store/actions';
 
 let canvasNode = null;
 let board = null;
@@ -11,8 +11,6 @@ const oldGenerationCOlor = '#f06060';
 function initCanvas(canvas) {
   canvasNode = canvas;
   canvasNode.offscreenCanvas = document.createElement('canvas');
-  canvasNode.offscreenCanvas.width = canvas.width;
-  canvasNode.offscreenCanvas.height = canvas.height;
 }
 
 function getAmountOfNeighbors(rowIndex, cellIndex) {
@@ -104,11 +102,11 @@ function* renderBoard() {
 }
 
 function* timer() {
-  const speed = yield select(state => state.speed);
   // initial render
   yield call(renderBoard);
   while (true) {
     // repeated render
+    const speed = yield select(state => state.speed);
     const result = yield race([
       call(delay, speed),
       take([PAUSE, CLEAR]),
@@ -123,12 +121,11 @@ function* timer() {
   }
 }
 
-function* main() {
-  const { payload } = yield take(INIT);
-  yield call(initCanvas, payload);
-  const { rows, cols } = yield select(state => ({
+function* createCells() {
+  const { rows, cols, cellSize } = yield select(state => ({
     rows: state.rows,
     cols: state.cols,
+    cellSize: state.cellSize,
   }));
   board = Array.from(
     { length: rows },
@@ -142,7 +139,26 @@ function* main() {
       },
     ),
   );
-  yield call(timer);
+  // update offscreen canvas sizes
+  canvasNode.width = cols * cellSize;
+  canvasNode.height = rows * cellSize;
+  canvasNode.offscreenCanvas.width = canvasNode.width;
+  canvasNode.offscreenCanvas.height = canvasNode.height;
+}
+
+function* clearCells() {
+  const newBoard = board.map(row => row.map(() => 0));
+  board = newBoard;
+  yield call(renderBoard);
+}
+
+function* main() {
+  const { payload } = yield take(INIT);
+  yield call(initCanvas, payload);
+  yield call(createCells);
+  yield fork(timer);
+  yield takeEvery(SETTINGS, createCells);
+  yield takeEvery(CLEAR, clearCells);
 }
 
 export default main;

@@ -37,10 +37,29 @@ export const FooterWrapper = styled.div`
   display: flex;
   flex-direction: column;
   > div {
-    flex: 1 1 auto;
     display: flex;
     flex-direction: row;
     justify-content: center;
+  }
+`;
+
+export const SpeedSelector = styled.div`
+  color: #e0f8f4;
+  margin: 10px;
+  margin-top: 20px;
+  font-size: 20px;
+  span {
+    padding: 5px;
+  }
+  select {
+    background: #373440;
+    font-size: 20px;
+    color: rgb(240,96,96);
+    padding: 5px 10px;
+    border: 0;
+    :focus {
+      outline: none;
+    }
   }
 `;
 

@@ -16,6 +16,16 @@ const createReducer = defaultState => handleActions(
       active: false,
       board: null,
     }),
+    [actions.SETTINGS]: (state, { payload: { cols, rows, cellSize } }) => ({
+      ...state,
+      cols,
+      rows,
+      cellSize,
+    }),
+    [actions.SPEED]: (state, { payload }) => ({
+      ...state,
+      speed: payload,
+    }),
   },
   defaultState,
 );

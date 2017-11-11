@@ -16,7 +16,9 @@ You need yarn (or npm) and Node installed.
 
 Should work for Node 6.11.5 or higher.
 
+```
 git clone https://github.com/ChrisGitter/game-of-life.git
 cd game-of-life
 yarn install
 yarn start
+```

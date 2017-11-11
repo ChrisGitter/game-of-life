@@ -1,15 +1,26 @@
+/* eslint-disable no-confusing-arrow */
+
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  div {
+  > div {
     display: flex;
     flex: 1 1 auto;
   }
 `;
 
 export const Header = styled.div`
+  flex-direction: column;
+  align-items: center;
+  h1 {
+    color : #e0f8f4;
+    font-size: 30px;
+  }
+`;
+
+export const Menu = styled.div`
   flex-direction: row;
   align-items: space-between;
 `;
@@ -22,15 +33,76 @@ export const Board = styled.div`
   }
 `;
 
-export const Footer = styled.div`
-  flex-direction: row;
-  align-items: space-between;
+export const FooterWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  > div {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+`;
+
+export const FooterField = styled.div`
+  margin: 10px;
+  font-size: 20px;
+  color: #e0f8f4;
+  flex: 0 0 auto;
+  input {
+    border: 0;
+    color: rgb(240,96,96);
+    font-size: 20px;
+    padding: 5px 10px;
+    width: 40px;
+    background: #373440;
+    :focus {
+      outline: none;
+    }
+  }
 `;
 
 const Button = styled.button`
-  font-size: 20px;
+  font-size: 24px;
+  border: 0;
+  padding: 5px 10px;
+  margin: 0 10px;
+  border: 2px solid;
+  :focus {
+    outline: none;
+  }
 `;
 
-export const StartButton = Button.extend``;
-export const PauseButton = Button.extend``;
-export const ClearButton = Button.extend``;
+export const StartButton = Button.extend`
+  background: ${p => p.active ? 'rgb(242, 235, 191)' : 'rgba(242, 235, 191, 0.5)'};
+  border-color: ${p => p.active ? 'rgb(242, 235, 191)' : 'transparent'};
+  ${p => p.active && `
+  :hover {
+    border-color: rgb(240, 96, 96);
+  }
+  `}
+`;
+export const PauseButton = Button.extend`
+  background: ${p => p.active ? 'rgb(242, 235, 191)' : 'rgba(242, 235, 191, 0.5)'};
+  border-color: ${p => p.active ? 'rgb(242, 235, 191)' : 'transparent'};
+  ${p => p.active && `
+  :hover {
+    border-color: rgb(240, 96, 96);
+  }
+  `}
+`;
+export const ClearButton = Button.extend`
+  background: rgb(240, 96, 96);
+  border-color: rgb(240, 96, 96);
+  :hover {
+    border-color: rgb(242, 235, 191);
+  }
+`;
+
+export const UpdateButton = Button.extend`
+  background: rgb(242, 235, 191);
+  border-color: rgb(242, 235, 191);
+  :hover {
+    border-color:  rgb(240, 96, 96);
+  }
+`;

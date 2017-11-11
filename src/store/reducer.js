@@ -1,7 +1,8 @@
 import { handleActions } from 'redux-actions';
 import * as actions from './actions';
 
-const createReducer = defaultState => handleActions({
+const createReducer = defaultState => handleActions(
+  {
     [actions.START]: state => ({
       ...state,
       active: true,
@@ -14,14 +15,6 @@ const createReducer = defaultState => handleActions({
       ...state,
       active: false,
       board: null,
-    }),
-    [actions.SET_BOARD]: (state, { payload }) => ({
-      ...state,
-      board: payload,
-    }),
-    [actions.INIT]: (state, { payload }) => ({
-      ...state,
-      canvas: payload,
     }),
   },
   defaultState,

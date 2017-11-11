@@ -7,9 +7,9 @@ import App from './App';
 
 const mapStateToProps = state => ({
   active: state.active,
-  sizeX: state.sizeX,
-  sizeY: state.sizeY,
-  canvas: state.canvas,
+  rows: state.rows,
+  cols: state.cols,
+  cellSize: state.cellSize,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
@@ -23,6 +23,8 @@ class AppContainer extends React.Component {
   constructor(props) {
     super(props);
 
+    this.init = false;
+
     this.setRef = this.setRef.bind(this);
     this.handleClickClear = this.handleClickClear.bind(this);
     this.handleClickPause = this.handleClickPause.bind(this);
@@ -31,8 +33,9 @@ class AppContainer extends React.Component {
   }
 
   setRef(elem) {
-    if (!this.props.canvas && elem) {
+    if (!this.init && elem) {
       this.props.init(elem);
+      this.init = true;
     }
   }
 
@@ -48,25 +51,33 @@ class AppContainer extends React.Component {
     this.props.clear();
   }
 
-  handleClickCanvas(e) {
-    console.log('clicked canvas', e);
+  handleClickCanvas() {
+    this.props.pause();
   }
 
   render() {
-    const { start, pause, clear, ...props} = this.props;
+    const { cols, rows, cellSize } = this.props;
+    const sizeX = cols * cellSize;
+    const sizeY = rows * cellSize;
     return (
       <App
+        active={this.props.active}
         setRef={this.setRef}
+        sizeX={sizeX}
+        sizeY={sizeY}
         handleClickStart={this.handleClickStart}
         handleClickPause={this.handleClickPause}
         handleClickClear={this.handleClickClear}
         handleClickCanvas={this.handleClickCanvas}
-        {...props}
       />
     );
   }
 }
 AppContainer.propTypes = {
+  active: PropTypes.bool.isRequired,
+  rows: PropTypes.number.isRequired,
+  cols: PropTypes.number.isRequired,
+  cellSize: PropTypes.number.isRequired,
   start: PropTypes.func.isRequired,
   pause: PropTypes.func.isRequired,
   clear: PropTypes.func.isRequired,

@@ -4,36 +4,57 @@ import {
   Wrapper,
   Board,
   ClearButton,
-  Footer,
   Header,
   PauseButton,
   StartButton,
+  Menu,
 } from './styled';
+import FooterContainer from './FooterContainer';
 
 const App = ({
+  active,
+  setRef,
+  sizeX,
+  sizeY,
   handleClickStart,
   handleClickPause,
   handleClickClear,
   handleClickCanvas,
-  setRef,
-  sizeX,
-  sizeY,
 }) => (
   <Wrapper>
     <Header>
-      <StartButton onClick={handleClickStart} >Start</StartButton>
-      <PauseButton onClick={handleClickPause} >Pause</PauseButton>
-      <ClearButton onClick={handleClickClear} >Clear</ClearButton>
+      <h1>
+        {"Conway's Game of Life"}
+      </h1>
+      <Menu>
+        <StartButton
+          onClick={handleClickStart}
+          active={!active}
+        >
+          Start
+        </StartButton>
+        <PauseButton
+          onClick={handleClickPause}
+          active={active}
+        >
+          Pause
+        </PauseButton>
+        <ClearButton
+          onClick={handleClickClear}
+        >
+          Clear
+        </ClearButton>
+      </Menu>
     </Header>
     <Board>
       <canvas
         ref={setRef}
-        height={sizeY * 10}
-        width={sizeX * 10}
+        height={sizeY}
+        width={sizeX}
         onClick={handleClickCanvas}
       />
     </Board>
-    <Footer />
+    <FooterContainer />
   </Wrapper>
 );
 App.propTypes = {
@@ -41,6 +62,7 @@ App.propTypes = {
   handleClickPause: PropTypes.func.isRequired,
   handleClickClear: PropTypes.func.isRequired,
   handleClickCanvas: PropTypes.func.isRequired,
+  active: PropTypes.bool.isRequired,
   setRef: PropTypes.func.isRequired,
   sizeX: PropTypes.number.isRequired,
   sizeY: PropTypes.number.isRequired,
